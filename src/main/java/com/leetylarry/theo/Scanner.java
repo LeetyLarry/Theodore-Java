@@ -71,12 +71,16 @@ public class Scanner {
                 break;
             case '!':
                 addToken(match('=') ? TokenType.EXCLAMATION_EQUAL : TokenType.EXCLAMATION);
+                break;
             case '=':
                 addToken(match('=') ? TokenType.DOUBLE_EQUAL : TokenType.EQUAL);
+                break;
             case '<':
                 addToken(match('=') ? TokenType.LESS_THAN_EQUAL : TokenType.LESS_THAN);
+                break;
             case '>':
                 addToken(match('=') ? TokenType.GREATER_THAN_EQUAL : TokenType.GREATER_THAN);
+                break;
             default:
                 System.err.println("Error on line: " + line);
         }
@@ -96,8 +100,8 @@ public class Scanner {
         tokens.add(new Token(tokenType, text, line));
     }
 
-    private boolean match(char expectedChararacter) {
-        if (isAtEnd() || sourceCode.charAt(current) != expectedChararacter) {
+    private boolean match(char expectedCharacter) {
+        if (isAtEnd() || sourceCode.charAt(current) != expectedCharacter) {
             return false;
         }
 

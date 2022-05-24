@@ -16,13 +16,25 @@ class ScannerTest {
 
     private Scanner scanner;
     @Test
-    void scannerShouldPrintTokens() throws IOException {
+    void singleCharacters() throws IOException {
         String sourceCode = SourceCodeReader.readFileToSourceCode("/home/ty/JDev/Theodore-Java/src/main/resources/single_characters.theo");
         scanner = new Scanner(sourceCode);
 
         List<Token> actualTokens = scanner.scanTokens();
 
         assertEquals(5, actualTokens.size());
+    }
+
+    @Test
+    void doubleCharacters() throws IOException {
+        String sourceCode = SourceCodeReader.readFileToSourceCode("/home/ty/JDev/Theodore-Java/src/main/resources/double_characters.theo");
+        scanner = new Scanner(sourceCode);
+
+        List<Token> actualTokens = scanner.scanTokens();
+
+        System.out.println(actualTokens);
+
+        assertEquals(4, actualTokens.size());
     }
 
 }
