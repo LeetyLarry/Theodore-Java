@@ -1,9 +1,31 @@
 package com.leetylarry.theo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Scanner {
+
+    private static final Map<String, TokenType> keywords;
+
+    static {
+        keywords = new HashMap<>();
+        keywords.put("and", TokenType.AND);
+        keywords.put("class", TokenType.CLASS);
+        keywords.put("else", TokenType.ELSE);
+        keywords.put("false", TokenType.FALSE);
+        keywords.put("for", TokenType.FOR);
+        keywords.put("if", TokenType.IF);
+        keywords.put("nil", TokenType.NIL);
+        keywords.put("or", TokenType.OR);
+        keywords.put("print", TokenType.PRINT);
+        keywords.put("return", TokenType.RETURN);
+        keywords.put("super", TokenType.SUPER);
+        keywords.put("this", TokenType.THIS);
+        keywords.put("true", TokenType.TRUE);
+        keywords.put("while", TokenType.WHILE);
+    }
     private final String sourceCode;
     private final List<Token> tokens;
     private final int length;
@@ -27,7 +49,7 @@ public class Scanner {
             scanToken();
         }
 
-        tokens.add(new Token(TokenType.EOF, "",  line));
+        tokens.add(new Token(TokenType.EOF, "",  line, null));
         return tokens;
     }
 
@@ -64,7 +86,7 @@ public class Scanner {
                 addToken(TokenType.PLUS);
                 break;
             case ';':
-                addToken(TokenType.SEMIOCOLON);
+                addToken(TokenType.SEMI_COLON);
                 break;
             case '*':
                 addToken(TokenType.STAR);
@@ -82,7 +104,13 @@ public class Scanner {
                 addToken(match('=') ? TokenType.GREATER_THAN_EQUAL : TokenType.GREATER_THAN);
                 break;
             default:
-                System.err.println("Error on line: " + line);
+                if (isAlpha(currentCharacter)) {
+                    handleIdentifier();
+                } else if (isNumeric(currentCharacter)) {
+                    handleNumber();
+                } else {
+                    System.err.println("Error on line: " + line);
+                }
         }
     }
 
@@ -97,7 +125,7 @@ public class Scanner {
 
     private void addToken(TokenType tokenType, Object literal) {
         String text = sourceCode.substring(start, current);
-        tokens.add(new Token(tokenType, text, line));
+        tokens.add(new Token(tokenType, text, line, literal));
     }
 
     private boolean match(char expectedCharacter) {
@@ -108,4 +136,67 @@ public class Scanner {
         current++;
         return true;
     }
+
+    private boolean isNumeric(char currentCharacter) {
+        return currentCharacter >= '0' && currentCharacter <= '9';
+    }
+
+    private boolean isAlpha(char currentCharacter) {
+        return (currentCharacter >= 'a' && currentCharacter <= 'z') ||
+                (currentCharacter >= 'A' && currentCharacter <= 'Z') ||
+                (currentCharacter == '_');
+    }
+
+    private boolean isAlphaNumeric(char currentCharacter) {
+        return isAlpha(currentCharacter) || isNumeric(currentCharacter);
+    }
+
+    private void handleIdentifier() {
+        while (isAlphaNumeric(peek())) {
+            advanceCharacter();
+        }
+
+        String text = sourceCode.substring(start, current);
+        TokenType tokenType = keywords.get(text);
+
+        if (tokenType == null) {
+            tokenType = TokenType.IDENTIFIER;
+        }
+
+        addToken(tokenType);
+    }
+
+    private void handleNumber() {
+
+        while (isNumeric(peek())) {
+            advanceCharacter();
+        }
+
+        if (peek() == '.' && isNumeric(peekNext())) {
+            advanceCharacter();
+
+            while (isNumeric(peek())) {
+                advanceCharacter();
+            }
+        }
+
+        addToken(TokenType.NUMBER, Double.parseDouble(sourceCode.substring(start, current)));
+    }
+
+    private char peek() {
+        if (isAtEnd()) {
+            return '\0';
+        }
+
+        return sourceCode.charAt(current);
+     }
+
+     private char peekNext() {
+        if (current + 1 >= length) {
+            return '\0';
+        }
+
+        return sourceCode.charAt(current + 1);
+     }
+
 }
