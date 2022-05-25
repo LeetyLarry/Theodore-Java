@@ -49,7 +49,7 @@ public class Scanner {
             scanToken();
         }
 
-        tokens.add(new Token(TokenType.EOF, "",  line));
+        tokens.add(new Token(TokenType.EOF, "",  line, null));
         return tokens;
     }
 
@@ -125,7 +125,7 @@ public class Scanner {
 
     private void addToken(TokenType tokenType, Object literal) {
         String text = sourceCode.substring(start, current);
-        tokens.add(new Token(tokenType, text, line));
+        tokens.add(new Token(tokenType, text, line, literal));
     }
 
     private boolean match(char expectedCharacter) {
