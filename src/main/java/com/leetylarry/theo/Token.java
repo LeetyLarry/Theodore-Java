@@ -13,6 +13,10 @@ public class Token {
         this.literal = literal;
     }
 
+    public String getLexeme() {
+        return lexeme;
+    }
+
     public String toString() {
         return tokenType + " " + lexeme;
     }
