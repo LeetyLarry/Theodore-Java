@@ -103,6 +103,22 @@ public class Scanner {
             case '>':
                 addToken(match('=') ? TokenType.GREATER_THAN_EQUAL : TokenType.GREATER_THAN);
                 break;
+            case '/':
+                if (match('/')) {
+                    while (peek() != '\n' && !isAtEnd()) {
+                        advanceCharacter();
+                    }
+                } else {
+                    addToken(TokenType.SLASH);
+                }
+                break;
+            case ' ':
+            case '\r':
+            case '\t':
+                break;
+            case '\n':
+                line++;
+                break;
             default:
                 if (isAlpha(currentCharacter)) {
                     handleIdentifier();
