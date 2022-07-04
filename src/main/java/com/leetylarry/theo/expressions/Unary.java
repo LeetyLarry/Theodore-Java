@@ -3,8 +3,8 @@ package com.leetylarry.theo.expressions;
 import com.leetylarry.theo.Token;
 
 public class Unary extends Expr {
-    final Token operator;
-    final Expr right;
+    public final Token operator;
+    public final Expr right;
 
     public Unary(Token operator, Expr right) {
         this.operator = operator;
@@ -12,7 +12,7 @@ public class Unary extends Expr {
     }
 
     @Override
-    <T> T accept(Visitor<T> visitor) {
+    public <T> T accept(Visitor<T> visitor) {
         return visitor.visitUnaryExpression(this);
     }
 }

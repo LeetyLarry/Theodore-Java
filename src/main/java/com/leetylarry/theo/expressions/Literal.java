@@ -1,7 +1,7 @@
 package com.leetylarry.theo.expressions;
 
 public class Literal extends Expr {
-    final Object value;
+    public final Object value;
 
     public Literal(Object value) {
         this.value = value;
@@ -9,7 +9,7 @@ public class Literal extends Expr {
 
 
     @Override
-    <T> T accept(Visitor<T> visitor) {
+    public <T> T accept(Visitor<T> visitor) {
         return visitor.visitLiteralExpression(this);
     }
 }

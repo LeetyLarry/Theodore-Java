@@ -1,7 +1,7 @@
 package com.leetylarry.theo.expressions;
 
 public class Grouping extends Expr {
-    final Expr expr;
+    public final Expr expr;
 
     public Grouping(Expr expr) {
         this.expr = expr;
@@ -9,7 +9,7 @@ public class Grouping extends Expr {
 
 
     @Override
-    <T> T accept(Visitor<T> visitor) {
+    public <T> T accept(Visitor<T> visitor) {
         return visitor.visitGroupingExpression(this);
     }
 }
