@@ -6,8 +6,8 @@ public class Interpreter implements Visitor<Object> {
 
     @Override
     public Object visitBinaryExpression(Binary expression) {
-        Object left = evaluate(expression);
-        Object right = evaluate(expression);
+        Object left = evaluate(expression.left);
+        Object right = evaluate(expression.right);
 
         switch (expression.operator.tokenType) {
             case PLUS -> {
@@ -93,5 +93,10 @@ public class Interpreter implements Visitor<Object> {
 
     private Object evaluate(Expr expr) {
         return expr.accept(this);
+    }
+
+    public void interpret(Expr expression) {
+        Object value = evaluate(expression);
+        System.out.println(value);
     }
 }

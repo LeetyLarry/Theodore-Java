@@ -1,14 +1,21 @@
 package com.leetylarry.theo;
 
 import com.leetylarry.theo.expressions.Expr;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.List;
 
+public class InterpreterTest {
 
-class ParserTest {
+    private Interpreter interpreter;
     private Scanner scanner;
+
+    @BeforeEach
+    void setup() {
+        interpreter = new Interpreter();
+    }
 
     @Test
     void singleCharacters() throws IOException {
@@ -20,6 +27,7 @@ class ParserTest {
 
         Expr expr = parser.parse();
 
+        interpreter.interpret(expr);
 
     }
 

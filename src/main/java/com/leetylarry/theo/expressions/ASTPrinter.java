@@ -36,4 +36,8 @@ public class ASTPrinter implements Visitor<String>{
         builder.append(")");
         return builder.toString();
     }
+
+    public String print(Expr expr) {
+        return expr.accept(this);
+    }
 }
