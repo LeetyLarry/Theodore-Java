@@ -12,13 +12,13 @@ class ParserTest {
 
     @Test
     void singleCharacters() throws IOException {
-        String sourceCode = SourceCodeReader.readFileToSourceCode("/home/ty/JDev/Theodore-Java/src/main/resources/parser_chars.theo");
-        scanner = new Scanner(sourceCode);
-
-        List<Token> tokens = scanner.scanTokens();
-        Parser parser = new Parser(tokens);
-
-        Expr expr = parser.parse();
+//        String sourceCode = SourceCodeReader.readFileToSourceCode("/home/ty/JDev/Theodore-Java/src/main/resources/parser_chars.theo");
+//        scanner = new Scanner(sourceCode);
+//
+//        List<Token> tokens = scanner.scanTokens();
+//        Parser parser = new Parser(tokens);
+//
+//        Expr expr = parser.parse();
 
 
     }

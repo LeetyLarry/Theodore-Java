@@ -1,7 +1,12 @@
 package com.leetylarry.theo;
 
 import com.leetylarry.theo.expressions.*;
+import com.leetylarry.theo.statements.Expression;
+import com.leetylarry.theo.statements.Print;
+import com.leetylarry.theo.statements.Statement;
+import com.leetylarry.theo.statements.Var;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Parser {
@@ -10,6 +15,10 @@ public class Parser {
 
     Parser(List<Token> tokens) {
         this.tokens = tokens;
+    }
+
+    private Expr expression() {
+        return equality();
     }
 
     private Expr expr() {
@@ -91,6 +100,9 @@ public class Parser {
         if (match(TokenType.FALSE)) {
             return new Literal(false);
         }
+        if (match(TokenType.IDENTIFIER)) {
+            return new Variable(previous());
+        }
 
         if (match(TokenType.LEFT_PAREN)) {
             Expr expr = expr();
@@ -149,7 +161,45 @@ public class Parser {
     }
 
 
-    public Expr parse() {
-        return expr();
+    public List<Statement> parse() {
+        List<Statement> statements = new ArrayList<>();
+
+        while (!isAtEnd()) {
+            statements.add(declaration());
+        }
+
+        return statements;
+    }
+
+    private Statement statement() {
+        if (match(TokenType.PRINT)) return printStatement();
+        return expressionStatement();
+    }
+
+    private Statement printStatement() {
+        Expr value = expression();
+        consume(TokenType.SEMI_COLON);
+        return new Print(value);
+    }
+
+    private Statement expressionStatement() {
+        Expr expr = expression();
+        consume(TokenType.SEMI_COLON);
+        return new Expression(expr);
+    }
+
+    private Statement declaration() {
+        if (match(TokenType.VAR)) return varDeclaration();
+        return statement();
+    }
+
+    private Statement varDeclaration() {
+        Token name = consume(TokenType.IDENTIFIER);
+        Expr initializer = null;
+        if (match(TokenType.EQUAL)) {
+            initializer = expression();
+        }
+        consume(TokenType.SEMI_COLON);
+        return new Var(name, initializer);
     }
 }

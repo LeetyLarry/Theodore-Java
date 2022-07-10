@@ -9,7 +9,7 @@ public class Literal extends Expr {
 
 
     @Override
-    public <T> T accept(Visitor<T> visitor) {
-        return visitor.visitLiteralExpression(this);
+    public <T> T accept(ExpressionVisitor<T> expressionVisitor) {
+        return expressionVisitor.visitLiteralExpression(this);
     }
 }

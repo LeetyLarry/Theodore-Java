@@ -1,6 +1,7 @@
 package com.leetylarry.theo;
 
 import com.leetylarry.theo.expressions.Expr;
+import com.leetylarry.theo.statements.Statement;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -25,7 +26,7 @@ public class InterpreterTest {
         List<Token> tokens = scanner.scanTokens();
         Parser parser = new Parser(tokens);
 
-        Expr expr = parser.parse();
+        List<Statement> expr = parser.parse();
 
         interpreter.interpret(expr);
 

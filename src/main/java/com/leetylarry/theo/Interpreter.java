@@ -1,8 +1,14 @@
 package com.leetylarry.theo;
 
 import com.leetylarry.theo.expressions.*;
+import com.leetylarry.theo.statements.Expression;
+import com.leetylarry.theo.statements.Print;
+import com.leetylarry.theo.statements.Statement;
+import com.leetylarry.theo.statements.StatementVisitor;
 
-public class Interpreter implements Visitor<Object> {
+import java.util.List;
+
+public class Interpreter implements ExpressionVisitor<Object>, StatementVisitor<Object> {
 
     @Override
     public Object visitBinaryExpression(Binary expression) {
@@ -95,8 +101,39 @@ public class Interpreter implements Visitor<Object> {
         return expr.accept(this);
     }
 
-    public void interpret(Expr expression) {
-        Object value = evaluate(expression);
-        System.out.println(value);
+    public void interpret(List<Statement> statements) {
+        for (Statement statement : statements) {
+            execute(statement);
+        }
+    }
+
+    private void execute(Statement statement) {
+        statement.accept(this);
+    }
+
+    @Override
+    public Object visitExpressionStmt(Expression statement) {
+        evaluate(statement.expression);
+        return null;
+    }
+
+    @Override
+    public Object visitPrintStmt(Print statement) {
+        Object value = evaluate(statement.expression);
+        System.out.println(stringify(value));
+        return null;
+    }
+
+    private String stringify(Object object) {
+        if (object == null) return "nil";
+
+        if (object instanceof Double) {
+            String text = object.toString();
+            if (text.endsWith(".0")) {
+                text = text.substring(0, text.length() - 2);
+            }
+            return text;
+        }
+        return object.toString();
     }
 }

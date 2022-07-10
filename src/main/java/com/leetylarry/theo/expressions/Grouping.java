@@ -9,7 +9,7 @@ public class Grouping extends Expr {
 
 
     @Override
-    public <T> T accept(Visitor<T> visitor) {
-        return visitor.visitGroupingExpression(this);
+    public <T> T accept(ExpressionVisitor<T> expressionVisitor) {
+        return expressionVisitor.visitGroupingExpression(this);
     }
 }

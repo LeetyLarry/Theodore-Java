@@ -1,6 +1,6 @@
 package com.leetylarry.theo.expressions;
 
-public class ASTPrinter implements Visitor<String>{
+public class ASTPrinter implements ExpressionVisitor<String> {
     @Override
     public String visitBinaryExpression(Binary expr) {
         return parenthesize(expr.operator.getLexeme(),

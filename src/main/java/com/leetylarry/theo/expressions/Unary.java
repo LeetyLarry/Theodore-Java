@@ -12,7 +12,7 @@ public class Unary extends Expr {
     }
 
     @Override
-    public <T> T accept(Visitor<T> visitor) {
-        return visitor.visitUnaryExpression(this);
+    public <T> T accept(ExpressionVisitor<T> expressionVisitor) {
+        return expressionVisitor.visitUnaryExpression(this);
     }
 }

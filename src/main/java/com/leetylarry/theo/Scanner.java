@@ -25,6 +25,7 @@ public class Scanner {
         keywords.put("this", TokenType.THIS);
         keywords.put("true", TokenType.TRUE);
         keywords.put("while", TokenType.WHILE);
+        keywords.put("var", TokenType.VAR);
     }
     private final String sourceCode;
     private final List<Token> tokens;

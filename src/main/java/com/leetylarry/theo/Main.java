@@ -14,12 +14,5 @@ public class Main {
         List<Token> tokens = scanner.scanTokens();
         Parser parser = new Parser(tokens);
 
-        Expr expr = parser.parse();
-
-        System.out.println(new ASTPrinter().print(expr));
-
-        Interpreter interpreter = new Interpreter();
-
-        interpreter.interpret(expr);
     }
 }
