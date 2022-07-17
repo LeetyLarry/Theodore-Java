@@ -7,4 +7,6 @@ public interface ExpressionVisitor<T> {
     T visitUnaryExpression(Unary expression);
 
     T visitVariableExpr(Variable expression);
+
+    T visitAssignExpr(Assign expression);
 }

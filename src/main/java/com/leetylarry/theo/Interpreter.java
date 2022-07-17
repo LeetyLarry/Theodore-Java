@@ -1,14 +1,13 @@
 package com.leetylarry.theo;
 
 import com.leetylarry.theo.expressions.*;
-import com.leetylarry.theo.statements.Expression;
-import com.leetylarry.theo.statements.Print;
-import com.leetylarry.theo.statements.Statement;
-import com.leetylarry.theo.statements.StatementVisitor;
+import com.leetylarry.theo.statements.*;
 
 import java.util.List;
 
 public class Interpreter implements ExpressionVisitor<Object>, StatementVisitor<Object> {
+
+    private Environment environment = new Environment();
 
     @Override
     public Object visitBinaryExpression(Binary expression) {
@@ -86,6 +85,11 @@ public class Interpreter implements ExpressionVisitor<Object>, StatementVisitor<
         return null;
     }
 
+    @Override
+    public Object visitVariableExpr(Variable expression) {
+        return environment.get(expression.name);
+    }
+
     private boolean isTruthy(Object object) {
         if (object == null) {
             return false;
@@ -122,6 +126,24 @@ public class Interpreter implements ExpressionVisitor<Object>, StatementVisitor<
         Object value = evaluate(statement.expression);
         System.out.println(stringify(value));
         return null;
+    }
+
+    @Override
+    public Void visitVarStmt(Var statement) {
+        Object value = null;
+        if (statement.initializer != null) {
+            value = evaluate(statement.initializer);
+        }
+        environment.define(statement.name.lexeme, value);
+
+        return null;
+    }
+
+    @Override
+    public Object visitAssignExpr(Assign expr) {
+        Object value = evaluate(expr.value);
+
+        return value;
     }
 
     private String stringify(Object object) {

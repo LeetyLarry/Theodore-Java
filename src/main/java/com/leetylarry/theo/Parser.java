@@ -18,7 +18,7 @@ public class Parser {
     }
 
     private Expr expression() {
-        return equality();
+        return assignment();
     }
 
     private Expr expr() {
@@ -201,5 +201,20 @@ public class Parser {
         }
         consume(TokenType.SEMI_COLON);
         return new Var(name, initializer);
+    }
+
+    private Expr assignment() {
+        Expr expr = equality();
+
+        if (match(TokenType.EQUAL)) {
+            Token equals = previous();
+            Expr value = assignment();
+            if (expr instanceof Variable) {
+                Token name = ((Variable)expr).name;
+                return new Assign(name, value);
+            }
+        }
+
+        return expr;
     }
 }
